@@ -14,7 +14,9 @@
     "next": "14.3.0-canary.47",
     "next-auth": "^5.0.0-beta.20",
     "react": "19.0.0-beta-4508873393-20240430",
-    "react-dom": "19.0.0-beta-4508873393-20240430"
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "19.0.0-beta-4508873393-20240430",
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
     "eslint": "^8",

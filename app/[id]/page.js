@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getJob } from "@/lib/api";
-
+import { saveJob } from "@/lib/actions";
 
 export default async function Job({ params }) {
   const { data, status, results } = await getJob(params.id);
+  const saveJobWithId = saveJob.bind(null, params.id);
 
   if (!data?.job) {
     return (
@@ -39,6 +40,24 @@ export default async function Job({ params }) {
             {new Date(created_at).toLocaleDateString()}
           </p>
         </header>
+
+        <div className="flex gap-8 mb-4">
+          <form action={saveJobWithId}>
+            <button
+              type="submit"
+              className="group relative flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Save Job
+            </button>
+          </form>
+
+          <Link
+            href={`${params.id}/apply`}
+            className="group relative flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          >
+            Apply
+          </Link>
+        </div>
 
         <section className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">

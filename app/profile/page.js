@@ -8,8 +8,8 @@ async function Profile() {
   const token = cookieStore.get("token");
   const session = await auth();
   const user = session?.user;
-  const  data  = await getUser(user?.id);
- console.log(data.data.user)
+  const data = await getUser(user?.id);
+  console.log(data.data.user.savedJobs);
   return (
     <div>
       <ProfileForm token={user?.token} data={data?.data?.user} />

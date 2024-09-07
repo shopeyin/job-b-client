@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import { Toaster } from 'sonner';
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import { AuthProvider } from "@/components/context/AuthContext";
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
+          <Toaster />
           <Navbar />
           {children}
         </AuthProvider>
