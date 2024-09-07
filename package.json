@@ -9,14 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^1.7.7",
+    "job-b": "file:",
+    "next": "14.3.0-canary.47",
+    "next-auth": "^5.0.0-beta.20",
     "react": "19.0.0-beta-4508873393-20240430",
-    "react-dom": "19.0.0-beta-4508873393-20240430",
-    "next": "14.3.0-canary.47"
+    "react-dom": "19.0.0-beta-4508873393-20240430"
   },
   "devDependencies": {
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
     "eslint": "^8",
-    "eslint-config-next": "14.3.0-canary.47"
+    "eslint-config-next": "14.3.0-canary.47",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
   }
 }
