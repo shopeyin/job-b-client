@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "axios": "^1.7.7",
     "job-b": "file:",
     "next": "14.3.0-canary.47",
