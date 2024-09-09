@@ -36,11 +36,9 @@ function Page() {
         throw new Error("Sign in failed");
       }
 
-      let x = await response.json();
-      console.log(x);
+      
 
-      // Redirect to dashboard or another page upon success
-      console.log("Sign-in successful", response);
+    
     } catch (error) {
       setErrorMessage(error.message);
     } finally {

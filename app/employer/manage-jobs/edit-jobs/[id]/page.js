@@ -6,7 +6,7 @@ async function EditJobs({ params: { id } }) {
   const session = await auth();
   const user = session?.user;
   const { data } = await getJob(id);
-  console.log(data);
+
   return (
     <div>
       <EditJobForm data={data.job} token={user.token}/>

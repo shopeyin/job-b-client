@@ -112,7 +112,7 @@ function ProfileForm({ data, token }) {
     e.preventDefault();
     setIsPending(true);
     await UpdateProfileFormAction(formData, token);
-    console.log("Form data submitted:", formData);
+    
     setIsPending(false);
     toast.success("User updated", {
       position: "top-center",

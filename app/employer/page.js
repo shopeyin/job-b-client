@@ -2,111 +2,111 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import CompanyProfileForm from "@/components/ui/CompanyProfileForm";
+import { getCompanyByCreator } from "@/lib/api";
 
 export default async function EmployerDashboard() {
   const session = await auth();
   const user = session?.user;
 
-  console.log(user);
+  const {
+    user: { company },
+  } = await getCompanyByCreator();
 
   if (user?.role !== "employer") {
     redirect("/");
   }
+ console.log('employer path called')
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <CompanyProfileForm />
-
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Welcome Section */}
-        <div className="mb-8">
+        <section className="bg-white p-6 rounded-lg shadow-md">
           <h1 className="text-3xl font-semibold text-gray-800">
             Welcome, {user?.name}!
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 mt-2">
             Here's an overview of your hiring activities.
           </p>
-        </div>
+        </section>
+        {/* Company Profile Form */}
+        <section className="bg-white p-8 rounded-lg shadow-md">
+          <CompanyProfileForm company={company} />
+        </section>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Active Jobs */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 className="text-xl font-semibold text-gray-700">Active Jobs</h2>
-            <p className="text-3xl font-bold text-blue-600">5</p>
-            <p className="text-gray-600">Total active job postings</p>
+            <p className="text-3xl font-bold text-blue-600 mt-2">5</p>
+            <p className="text-gray-600 mt-1">Total active job postings</p>
             <Link
               href="/employer/manage-jobs"
-              className="text-blue-500 mt-4 block hover:underline"
+              className="text-blue-500 mt-4 hover:underline"
             >
               Manage Jobs
             </Link>
           </div>
 
-          {/* Pending Applications */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 className="text-xl font-semibold text-gray-700">
               Pending Applications
             </h2>
-            <p className="text-3xl font-bold text-blue-600">12</p>
-            <p className="text-gray-600">Applications awaiting review</p>
+            <p className="text-3xl font-bold text-blue-600 mt-2">12</p>
+            <p className="text-gray-600 mt-1">Applications awaiting review</p>
             <Link
               href="/employer/manage-applications"
-              className="text-blue-500 mt-4 block hover:underline"
+              className="text-blue-500 mt-4 hover:underline"
             >
               Manage Applications
             </Link>
           </div>
 
-          {/* Candidates */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 className="text-xl font-semibold text-gray-700">Candidates</h2>
-            <p className="text-3xl font-bold text-blue-600">8</p>
-            <p className="text-gray-600">Shortlisted candidates</p>
+            <p className="text-3xl font-bold text-blue-600 mt-2">8</p>
+            <p className="text-gray-600 mt-1">Shortlisted candidates</p>
             <Link
               href="/employer/candidates"
-              className="text-blue-500 mt-4 block hover:underline"
+              className="text-blue-500 mt-4 hover:underline"
             >
               View Candidates
             </Link>
           </div>
-        </div>
+        </section>
 
         {/* Recent Activity Section */}
-        <div className="mt-8">
+        <section className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             Recent Activity
           </h2>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <ul className="space-y-4">
-              <li className="flex justify-between">
-                <span className="text-gray-700">
-                  Posted a new job for "Software Engineer"
-                </span>
-                <span className="text-sm text-gray-500">2 days ago</span>
-              </li>
-              <li className="flex justify-between">
-                <span className="text-gray-700">
-                  Scheduled an interview with "John Doe"
-                </span>
-                <span className="text-sm text-gray-500">3 days ago</span>
-              </li>
-              <li className="flex justify-between">
-                <span className="text-gray-700">
-                  Marked "Data Analyst" position as filled
-                </span>
-                <span className="text-sm text-gray-500">5 days ago</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+          <ul className="space-y-4">
+            <li className="flex justify-between">
+              <span className="text-gray-700">
+                Posted a new job for "Software Engineer"
+              </span>
+              <span className="text-sm text-gray-500">2 days ago</span>
+            </li>
+            <li className="flex justify-between">
+              <span className="text-gray-700">
+                Scheduled an interview with "John Doe"
+              </span>
+              <span className="text-sm text-gray-500">3 days ago</span>
+            </li>
+            <li className="flex justify-between">
+              <span className="text-gray-700">
+                Marked "Data Analyst" position as filled
+              </span>
+              <span className="text-sm text-gray-500">5 days ago</span>
+            </li>
+          </ul>
+        </section>
 
         {/* Quick Actions Section */}
-        <div className="mt-8">
+        <section className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Post New Job */}
             <Link
               href="/employer/manage-jobs/new"
               className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-lg flex items-center justify-center"
@@ -114,7 +114,6 @@ export default async function EmployerDashboard() {
               Post New Job
             </Link>
 
-            {/* View Applications */}
             <Link
               href="/employer/manage-applications"
               className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-lg flex items-center justify-center"
@@ -122,7 +121,7 @@ export default async function EmployerDashboard() {
               View Applications
             </Link>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
