@@ -13,7 +13,7 @@ async function Page() {
       {/* No Applications Message */}
       {applications && applications.length === 0 ? (
         <div className="text-center text-gray-500">
-          <p className="text-lg">You haven't applied for any jobs yet.</p>
+          <p className="text-lg">You haven&apos;t applied for any jobs yet.</p>
         </div>
       ) : (
         <div className="space-y-6">

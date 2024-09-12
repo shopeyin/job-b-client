@@ -9,7 +9,7 @@ async function EditJobs({ params: { id } }) {
 
   return (
     <div>
-      <EditJobForm data={data.job} token={user.token}/>
+      <EditJobForm data={data?.job} token={user?.token} />
     </div>
   );
 }

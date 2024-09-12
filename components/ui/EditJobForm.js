@@ -24,15 +24,15 @@ function EditJobForm({ data, token }) {
   const router = useRouter();
 
   const initialFormData = {
-    title: data.title,
-    description: data.description,
-    requirements: data.requirements,
-    location: data.location,
-    industry: data.industry,
-    salaryMin: data.salary.min,
-    salaryMax: data.salary.max,
-    workArrangement: data.work_arrangement,
-    contractType: data.contract_type,
+    title: data?.title || "", // Fallback to empty string if null/undefined
+    description: data?.description || "",
+    requirements: data?.requirements || [""], // Default to an array with an empty string
+    location: data?.location || "",
+    industry: data?.industry || "",
+    salaryMin: data?.salary?.min || "", // Optional chaining for nested fields like salary.min
+    salaryMax: data?.salary?.max || "",
+    workArrangement: data?.work_arrangement || "",
+    contractType: data?.contract_type || "",
   };
   const [formData, setFormData] = useState(initialFormData);
   const [isPending, setIsPending] = useState(false);

@@ -45,7 +45,7 @@ function ApplicationComponent({ jobId, applicationId, status }) {
           disabled={isPending}
           className="bg-violet-500 hover:bg-violet-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-opacity-75"
         >
-          Update
+          {isPending ? "Updating..." : "Update"}
         </button>
       </form>
     </>

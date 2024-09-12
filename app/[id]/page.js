@@ -1,11 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getJob } from "@/lib/api";
-import { saveJob } from "@/lib/actions";
+import { checkSavedJob, getJob, unSaveJob } from "@/lib/api";
+import SaveJobButton from "@/components/ui/SaveJobButton";
+import { auth } from "@/auth";
 
 export default async function Job({ params }) {
-  const { data, status, results } = await getJob(params.id);
-  const saveJobWithId = saveJob.bind(null, params.id);
+  const session = await auth();
+  const user = session?.user;
+  // const jobResponse = await getJob(params.id);
+
+  // const { data } = jobResponse;
+  // console.log(data, "HERE");
+
+  const [jobResponse, isSaved] = await Promise.all([
+    getJob(params.id),
+    checkSavedJob(params.id, user.token),
+  ]);
+
+  const { data } = jobResponse;
+
+  console.log(isSaved);
 
   if (!data?.job) {
     return (
@@ -42,14 +56,8 @@ export default async function Job({ params }) {
         </header>
 
         <div className="flex gap-8 mb-4">
-          <form action={saveJobWithId}>
-            <button
-              type="submit"
-              className="group relative flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Save Job
-            </button>
-          </form>
+          {/* {isSaved.data ? "saved" : "not saved"} */}
+          <SaveJobButton id={params.id} isSaved={isSaved.data} />
 
           <Link
             href={`${params.id}/apply`}

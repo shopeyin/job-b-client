@@ -31,8 +31,8 @@ export default async function Home({ searchParams }) {
                 </Link>
                 <p className="text-gray-600 mt-2">{item?.location}</p>
                 <p className="text-gray-600 mt-1">
-                  ${item.salary.min.toLocaleString()} - $
-                  {item.salary.max.toLocaleString()} per year
+                  ${item?.salary?.min?.toLocaleString()} - $
+                  {item?.salary?.max?.toLocaleString()} per year
                 </p>
                 <p className="text-gray-600 mt-1">{item?.company?.name}</p>
                 <p className="text-gray-600 mt-1">{item?.contract_type}</p>

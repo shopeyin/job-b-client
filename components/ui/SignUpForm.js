@@ -7,6 +7,8 @@ function SignUpForm() {
     SignupAction,
     undefined
   );
+
+  console.log(errorMessage)
   return (
     <main className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -48,6 +50,7 @@ function SignUpForm() {
           <div>
             <button
               type="submit"
+              disabled={isPending}
               aria-disabled={isPending}
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
@@ -56,7 +59,7 @@ function SignUpForm() {
           </div>
           {errorMessage && (
             <p className="mt-2 text-center text-sm text-red-600">
-              {errorMessage.message}
+              {errorMessage}
             </p>
           )}
         </form>

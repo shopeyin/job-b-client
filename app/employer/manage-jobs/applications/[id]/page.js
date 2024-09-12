@@ -5,7 +5,7 @@ import { getAllApplicationsByJob } from "@/lib/api";
 async function Applications({ params: { id } }) {
   const applications = await getAllApplicationsByJob(id);
 
-  console.log("dynamic APPlic, called");
+
   return (
     <div className="max-w-7xl mx-auto p-4">
       {applications.length === 0 ? (

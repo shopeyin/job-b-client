@@ -11,27 +11,27 @@ export const metadata = {
 
 const employerNavItems = [
   {
-    label: "Manage Jobs",
-    href: "/employer/manage-jobs",
+    label: "Manage Users",
+    href: "/admin/users",
     icon: BriefCaseIcon,
   },
   {
-    label: "Manage Applications",
-    href: "/employer/manage-applications",
+    label: "Manage Jobs",
+    href: "/admin/jobs",
     icon: ClipBoardIcon,
   },
   {
-    label: "Candidates",
-    href: "/employer/candidates",
+    label: "Settings",
+    href: "/admin/settings",
     icon: UsersIcon,
   },
 ];
 
-export default function EmployerLayout({ children }) {
+export default function AdminLayout({ children }) {
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
-      <SideNav title="Employer Panel" navItems={employerNavItems} />
+      <SideNav title="Admin Panel" navItems={employerNavItems} />
 
       {/* Main Content */}
       <div className="flex-1 bg-gray-100 p-6">
