@@ -55,14 +55,16 @@
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
-export default function Search({ placeholder }) {
+export default function Search({ placeholder, totalPages }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
   // States for filters
   const [title, setTitle] = useState(searchParams.get("title") || "");
+  const [page, setPage] = useState(searchParams.get("page") || 1);
   const [workArrangement, setWorkArrangement] = useState(
     searchParams.get("work_arrangement") || ""
   );
@@ -76,9 +78,13 @@ export default function Search({ placeholder }) {
     searchParams.get("maxSalary") || ""
   );
 
-  function handleSearch() {
+  const handleSearch = useDebouncedCallback(() => {
     const params = new URLSearchParams();
 
+    // params.set("page", "1");
+    if (page !== 1) {
+      params.set("page", page);
+    }
     if (title) params.set("title", title);
     if (workArrangement) params.set("work_arrangement", workArrangement);
     if (contractType) params.set("contract_type", contractType);
@@ -86,14 +92,50 @@ export default function Search({ placeholder }) {
     if (maxSalary) params.set("maxSalary", maxSalary);
 
     replace(`${pathname}?${params.toString()}`);
-  }
+  }, 2000);
 
   useEffect(() => {
     handleSearch(); // Update URL when any filter changes
+  }, [page, title, workArrangement, contractType, minSalary, maxSalary]);
+
+  useEffect(() => {
+    setPage(1);
+    handleSearch();
   }, [title, workArrangement, contractType, minSalary, maxSalary]);
 
+  const handlePrevious = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+  const handleNext = () => {
+    setPage((prevCount) => {
+      // Only increment if count is less than 10
+      if (prevCount <= totalPages) {
+        console.log(prevCount);
+        return prevCount + 1;
+      } else {
+        return prevCount; // If the condition fails, return the current count
+      }
+    });
+  };
+  console.log(page, totalPages);
   return (
     <div className="relative w-full">
+      <button
+        className="px-4 py-2 rounded-md text-white font-medium transition-colors bg-blue-500"
+        onClick={handlePrevious}
+        disabled={page <= 1}
+      >
+        Previous
+      </button>
+      <button
+        onClick={handleNext}
+        disabled={page >= totalPages}
+        className="px-4 py-2 rounded-md text-white font-medium transition-colors bg-green-500"
+      >
+        Next
+      </button>
       <label htmlFor="search" className="sr-only">
         Search
       </label>
@@ -105,7 +147,6 @@ export default function Search({ placeholder }) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-     
 
       {/* Filters */}
       <div className="mt-4">
@@ -122,7 +163,7 @@ export default function Search({ placeholder }) {
           className="mt-1 block w-full p-2 border rounded-lg bg-white focus:ring focus:border-blue-500"
         >
           <option value="">Select</option>
-      
+
           <option value="remote">Remote</option>
           <option value="onsite">On-site</option>
           <option value="hybrid">Hybrid</option>
@@ -141,7 +182,7 @@ export default function Search({ placeholder }) {
           className="mt-1 block w-full p-2 border rounded-lg bg-white focus:ring focus:border-blue-500"
         >
           <option value="">Select</option>
-      
+
           <option value="Full-time">Full Time</option>
           <option value="Part-time">Part Time</option>
           <option value="Contract">Contract</option>

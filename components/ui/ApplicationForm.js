@@ -4,28 +4,35 @@ import { sendJobApplication } from "@/lib/actions";
 import { toast } from "sonner";
 
 function ApplicationForm({ id }) {
-  const [errorMessage, formAction, isPending] = useActionState(
+  const [formState, formAction, isPending] = useActionState(
     sendJobApplication.bind(null, id),
     undefined
   );
 
-  useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage, {
-        position: "top-center",
-        className: "bg-red-500",
-        duration: 5000,
-      });
-    }
-  }, [errorMessage]);
+  // useEffect(() => {
+  //   if (errorMessage) {
+  //     toast.error(errorMessage, {
+  //       position: "top-center",
+  //       className: "bg-red-500",
+  //       duration: 5000,
+  //     });
+  //   }
+  // }, [errorMessage]);
 
   return (
     <>
       <form action={formAction} className="space-y-6">
+        {formState?.errors?.err && (
+          <p className="text-red-600 text-sm mb-2">{formState?.errors?.err}</p>
+        )}
         {/* Cover Letter */}
         <div>
-          {" "}
-          {id}
+          {formState?.errors?.resume && (
+            <p className="text-red-600 text-sm mb-2">
+              {formState?.errors?.resume?.join(", ")}
+            </p>
+          )}
+
           <label
             htmlFor="coverLetter"
             className="block text-sm font-medium text-gray-700"
@@ -46,6 +53,11 @@ function ApplicationForm({ id }) {
         </div>
 
         {/* Resume Upload */}
+        {formState?.errors?.cover_letter && (
+          <p className="text-red-600 text-sm mb-2">
+            {formState?.errors?.cover_letter?.join(", ")}
+          </p>
+        )}
         <div>
           <label
             htmlFor="resume"
@@ -55,7 +67,7 @@ function ApplicationForm({ id }) {
           </label>
           <div className="mt-1 flex items-center">
             <input
-              type="text"
+              type="file"
               id="resume"
               name="resume"
               accept=".pdf,.doc,.docx"

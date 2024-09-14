@@ -2,7 +2,7 @@ import { getAllApplicationsByUser } from "@/lib/api";
 
 async function Page() {
   const { applications } = await getAllApplicationsByUser();
-  console.log(applications);
+ 
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">

@@ -1,7 +1,6 @@
 "use client";
 import { UpdateUserAction } from "@/lib/actions";
-import React, { useActionState, useState, useEffect,  } from "react";
-
+import React, { useActionState, useState, useEffect } from "react";
 
 function EditUserForm({ user }) {
   const [message, formAction, isPending] = useActionState(
@@ -21,14 +20,13 @@ function EditUserForm({ user }) {
     }
   }, [message]);
 
-
   const handleEdit = () => {
     setEditModalOpen(true);
   };
 
-//   console.log(message, "MESSAGE");
-//   console.log(notify, "NOTIFY");
-//   console.log(isEditModalOpen, "MODAL");
+  //   console.log(message, "MESSAGE");
+  //   console.log(notify, "NOTIFY");
+  //   console.log(isEditModalOpen, "MODAL");
 
   return (
     <>
@@ -74,6 +72,19 @@ function EditUserForm({ user }) {
                   <option value="job_seeker">Job Seeker</option>
                   <option value="employer">Employer</option>
                   <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
+                <select
+                  name="active"
+                  defaultValue={user?.active}
+                  className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value={true}>Activate</option>
+                  <option value={false}>Deactivate</option>
                 </select>
               </div>
               <div className="flex justify-end space-x-4">

@@ -19,7 +19,7 @@ export default async function Job({ params }) {
 
   const { data } = jobResponse;
 
-  console.log(isSaved);
+  console.log(data);
 
   if (!data?.job) {
     return (
@@ -42,6 +42,7 @@ export default async function Job({ params }) {
     requirements,
     company,
     created_at,
+    status,
   } = data.job;
 
   return (
@@ -57,14 +58,23 @@ export default async function Job({ params }) {
 
         <div className="flex gap-8 mb-4">
           {/* {isSaved.data ? "saved" : "not saved"} */}
-          <SaveJobButton id={params.id} isSaved={isSaved.data} />
 
-          <Link
-            href={`${params.id}/apply`}
-            className="group relative flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-          >
-            Apply
-          </Link>
+          {status !== "closed" ? (
+            <>
+              <SaveJobButton id={params.id} isSaved={isSaved.data} />
+
+              <Link
+                href={`${params.id}/apply`}
+                className="group relative flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              >
+                Apply
+              </Link>
+            </>
+          ) : (
+            <span className="inline-block rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-800">
+              Closed
+            </span>
+          )}
         </div>
 
         <section className="bg-white p-6 rounded-lg shadow-md">

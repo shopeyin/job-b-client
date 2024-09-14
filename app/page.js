@@ -1,8 +1,11 @@
+import Pagination from "@/components/ui/Pagination";
 import { fetchJobs } from "../lib/api";
 import Search from "@/components/ui/Search";
 import Link from "next/link";
+export const revalidate = 0;
 
 export default async function Home({ searchParams }) {
+  console.log(searchParams, "SEARCH");
   const params = new URLSearchParams(searchParams);
   const queryString = params.toString();
   const data = await fetchJobs(queryString);
@@ -15,7 +18,9 @@ export default async function Home({ searchParams }) {
         </header>
 
         <div className="mt-8">
-          <Search />
+         
+          {/* <Pagination count={data?.total} /> */}
+          <Search totalPages={data.totalPages} />
           <h1>{data.results} results</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {data?.data?.jobs.map((item) => (

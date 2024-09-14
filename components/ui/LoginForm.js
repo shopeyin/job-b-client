@@ -3,14 +3,17 @@ import { useActionState } from "react";
 import { LoginAction } from "../../lib/actions";
 
 export default function LoginForm() {
-  const [errorMessage, formAction, isPending] = useActionState(
+  const [formState, formAction, isPending] = useActionState(
     LoginAction,
     undefined
   );
-
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
+        <p className="text-red-600 text-sm mb-1 text-center">
+          {formState?.errors?.err}
+        </p>
         <div>
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
@@ -26,8 +29,13 @@ export default function LoginForm() {
           </p>
         </div>
         <form className="mt-8 space-y-6" action={formAction}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm space-y-4">
             <div>
+              {formState?.errors?.email && (
+                <p className="text-red-600 text-sm mb-1">
+                  {formState?.errors?.email?.join(", ")}
+                </p>
+              )}
               <label htmlFor="email" className="sr-only">
                 Email address
               </label>
@@ -35,12 +43,20 @@ export default function LoginForm() {
                 id="email"
                 name="email"
                 type="email"
+                defaultValue={formState?.fieldData?.email}
                 required
-                className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                className={`relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm ${
+                  formState?.errors?.email ? "border-red-500" : ""
+                }`}
                 placeholder="Email address"
               />
             </div>
             <div>
+              {formState?.errors?.password && (
+                <p className="text-red-600 text-sm mb-1">
+                  {formState?.errors?.password?.join(", ")}
+                </p>
+              )}
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
@@ -49,7 +65,9 @@ export default function LoginForm() {
                 name="password"
                 type="password"
                 required
-                className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                className={`relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm ${
+                  formState?.errors?.password ? "border-red-500" : ""
+                }`}
                 placeholder="Password"
               />
             </div>
@@ -90,11 +108,6 @@ export default function LoginForm() {
               {isPending ? "Signing in..." : "Sign In"}
             </button>
           </div>
-          {errorMessage && (
-            <p className="mt-2 text-center text-sm text-red-600">
-              {errorMessage}
-            </p>
-          )}
         </form>
       </div>
     </div>
