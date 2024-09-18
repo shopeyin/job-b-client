@@ -24,9 +24,9 @@ function EditUserForm({ user }) {
     setEditModalOpen(true);
   };
 
-  //   console.log(message, "MESSAGE");
-  //   console.log(notify, "NOTIFY");
-  //   console.log(isEditModalOpen, "MODAL");
+  //
+  //
+  //
 
   return (
     <>

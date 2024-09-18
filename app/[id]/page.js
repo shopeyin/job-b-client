@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { checkSavedJob, getJob, unSaveJob } from "@/lib/api";
+import { checkAppliedJob, checkSavedJob, getJob, unSaveJob } from "@/lib/api";
 import SaveJobButton from "@/components/ui/SaveJobButton";
 import { auth } from "@/auth";
 
@@ -10,16 +10,15 @@ export default async function Job({ params }) {
   // const jobResponse = await getJob(params.id);
 
   // const { data } = jobResponse;
-  // console.log(data, "HERE");
+  //
 
-  const [jobResponse, isSaved] = await Promise.all([
-    getJob(params.id),
-    checkSavedJob(params.id, user.token),
+  const [jobResponse, isSaved, isApplied] = await Promise.all([
+    getJob(params?.id),
+    checkSavedJob(params?.id, user?.token),
+    checkAppliedJob(params?.id, user?.token),
   ]);
 
   const { data } = jobResponse;
-
-  console.log(data);
 
   if (!data?.job) {
     return (
@@ -57,18 +56,22 @@ export default async function Job({ params }) {
         </header>
 
         <div className="flex gap-8 mb-4">
-          {/* {isSaved.data ? "saved" : "not saved"} */}
-
           {status !== "closed" ? (
             <>
               <SaveJobButton id={params.id} isSaved={isSaved.data} />
 
-              <Link
-                href={`${params.id}/apply`}
-                className="group relative flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-              >
-                Apply
-              </Link>
+              {isApplied.data ? (
+                <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-green-800 bg-green-100 rounded-full">
+                  Applied
+                </span>
+              ) : (
+                <Link
+                  href={`${params.id}/apply`}
+                  className="group relative inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+                >
+                  Apply
+                </Link>
+              )}
             </>
           ) : (
             <span className="inline-block rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-800">
@@ -119,14 +122,14 @@ export default async function Job({ params }) {
           </ul>
         </section>
 
-        <footer className="mt-6">
+        <div className="mt-6">
           <Link
             href={`/company/${company}`}
             className="text-blue-600 hover:underline"
           >
             View Company Profile
           </Link>
-        </footer>
+        </div>
       </div>
     </main>
   );

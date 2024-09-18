@@ -15,6 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+       
         <AuthProvider>
           <Toaster />
           <Navbar />
@@ -24,3 +25,5 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+

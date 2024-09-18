@@ -42,7 +42,7 @@ export default SaveJobButton;
 //     const checkIfSaved = async () => {
 //       try {
 //         const response = await checkSavedJob(id, token);
-//         console.log(response);
+//
 //         setIsSaved(response.data); // assuming API returns { isSaved: true/false }
 //       } catch (error) {
 //         console.error("Error checking save status:", error);
@@ -63,7 +63,7 @@ export default SaveJobButton;
 //       } else {
 //         // Save the item
 //         let x = await saveJob(id, userId, token);
-//         console.log(x, "SAVE JOB");
+//
 //         setIsSaved(true);
 //       }
 //     } catch (error) {
@@ -73,7 +73,7 @@ export default SaveJobButton;
 //     }
 //   };
 
-//   console.log(isSaved, "ISSAVED");
+//
 //   return (
 //     <>
 //       {loaded ? (

@@ -6,7 +6,7 @@ import { getAllUsers } from "@/lib/api";
 
 async function Users() {
   const { users } = await getAllUsers();
-  // console.log(users);
+  //
   return (
     <div>
       <div className="container mx-auto p-8">

@@ -2,11 +2,10 @@ import { getAllApplicationsByUser } from "@/lib/api";
 
 async function Page() {
   const { applications } = await getAllApplicationsByUser();
- 
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+    <div className="min-h-screen max-w-7xl mx-auto   py-10 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-extrabold text-dark-blue mb-8 text-center">
         My Job Applications
       </h1>
 
@@ -20,12 +19,12 @@ async function Page() {
           {applications?.map((application) => (
             <div
               key={application?._id}
-              className="bg-white shadow rounded-lg p-6 border"
+              className="bg-white shadow-lg rounded-lg p-6 border border-gray-200"
             >
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
                 {/* Job Info */}
-                <div className="flex-1">
-                  <h2 className="text-xl font-semibold text-gray-800">
+                <div className="flex-1 mb-4 lg:mb-0">
+                  <h2 className="text-2xl font-semibold text-dark-blue">
                     {application?.job?.title || "Job title unavailable"}
                   </h2>
                   <p className="text-sm text-gray-500">
@@ -46,6 +45,8 @@ async function Page() {
                   className={`text-sm font-medium px-3 py-1 rounded-full ${
                     application?.status === "applied"
                       ? "bg-blue-100 text-blue-600"
+                      : application?.status === "rejected"
+                      ? "bg-red-100 text-red-600"
                       : "bg-green-100 text-green-600"
                   }`}
                 >
@@ -56,7 +57,7 @@ async function Page() {
               {/* Cover Letter */}
               {application?.cover_letter && (
                 <div className="mt-4">
-                  <h3 className="text-sm font-semibold text-gray-800">
+                  <h3 className="text-sm font-semibold text-dark-blue">
                     Cover Letter:
                   </h3>
                   <p className="text-sm text-gray-700 mt-1">
@@ -68,10 +69,17 @@ async function Page() {
               {/* Resume */}
               {application?.resume && (
                 <div className="mt-4">
-                  <h3 className="text-sm font-semibold text-gray-800">Resume:</h3>
-                  <p className="text-sm text-blue-600 mt-1 underline cursor-pointer">
-                    {application.resume}
-                  </p>
+                  <h3 className="text-sm font-semibold text-dark-blue">
+                    Resume:
+                  </h3>
+                  <a
+                    href={application.resume}
+                    target="_blank" // Opens the resume in a new tab
+                    rel="noopener noreferrer"
+                    className="text-sm text-teal underline mt-1"
+                  >
+                    View Resume
+                  </a>
                 </div>
               )}
             </div>

@@ -1,91 +1,30 @@
 import { getSavedJobs } from "@/lib/api";
+import { JobCard } from "@/components/ui/JobCard";
 
 async function SavedJobs() {
   let { savedJobs } = await getSavedJobs();
 
-  // Check if savedJobs is null or undefined
   if (!savedJobs) {
     savedJobs = [];
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6 text-center">Saved Jobs</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 className="text-4xl font-extrabold text-dark-blue mb-8 text-center">
+        Saved Jobs
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {savedJobs.length === 0 ? (
-          <p className="text-center text-gray-500">You have no saved jobs.</p>
+          <p className="text-center text-gray-500">
+            You have no saved jobs at the moment.
+          </p>
         ) : (
           savedJobs.map((savedJob) => (
-            <div
+            <JobCard
               key={savedJob?._id}
-              className="bg-white shadow-lg rounded-lg p-6 border border-gray-200"
-            >
-              <div className="mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  {savedJob?.job?.title || "Job title unavailable"}
-                </h2>
-                <p className="text-gray-500 text-sm">
-                  {savedJob?.job?.location || "Location not specified"}
-                </p>
-              </div>
-
-              <p className="text-gray-700 mb-4">
-                {savedJob?.job?.description
-                  ? savedJob.job.description.slice(0, 100)
-                  : "Description not available"}
-                ...
-              </p>
-
-              <div className="mb-4">
-                <span className="text-gray-700 font-medium">Salary:</span>{" "}
-                <span className="text-gray-900">
-                  ${savedJob?.job?.salary?.min || "N/A"} - $
-                  {savedJob?.job?.salary?.max || "N/A"}
-                </span>
-              </div>
-
-              <div className="mb-4">
-                <span className="text-gray-700 font-medium">
-                  Work Arrangement:
-                </span>{" "}
-                <span className="text-gray-900">
-                  {savedJob?.job?.work_arrangement || "Not specified"}
-                </span>
-              </div>
-
-              <div className="mb-4">
-                <span className="text-gray-700 font-medium">
-                  Contract Type:
-                </span>{" "}
-                <span className="text-gray-900">
-                  {savedJob?.job?.contract_type || "Not specified"}
-                </span>
-              </div>
-
-              <div className="mb-4">
-                <span className="text-gray-700 font-medium">Posted on:</span>{" "}
-                <span className="text-gray-900">
-                  {savedJob?.job?.created_at
-                    ? new Date(savedJob.job.created_at).toLocaleDateString()
-                    : "Unknown"}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <a
-                  href={`/${savedJob?.job?._id || "#"}`}
-                  className="text-blue-500 hover:underline"
-                >
-                  View Job
-                </a>
-                <span className="text-sm text-gray-500">
-                  Saved on:{" "}
-                  {savedJob?.savedAt
-                    ? new Date(savedJob.savedAt).toLocaleDateString()
-                    : "Unknown"}
-                </span>
-              </div>
-            </div>
+              job={savedJob?.job}
+              savedAt={savedJob?.savedAt}
+            />
           ))
         )}
       </div>

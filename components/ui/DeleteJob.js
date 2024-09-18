@@ -10,7 +10,6 @@ function DeleteJob({ job }) {
     setDeleteModalOpen(true);
   };
 
-  console.log(isDeleteModalOpen);
   return (
     <>
       {" "}

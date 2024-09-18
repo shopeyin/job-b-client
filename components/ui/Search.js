@@ -1,61 +1,9 @@
-// "use client";
-// import { useSearchParams, usePathname, useRouter } from "next/navigation";
-
-// export default function Search({ placeholder }) {
-//   const searchParams = useSearchParams();
-//   const pathname = usePathname();
-//   const { replace } = useRouter();
-
-//   function handleSearch(term) {
-//     const params = new URLSearchParams(searchParams);
-
-//     if (term) {
-//       params.set("title", term);
-//     } else {
-//       params.delete("title");
-//     }
-
-//     replace(`${pathname}?${params.toString()}`);
-//   }
-
-//   return (
-//     <div className="relative w-full">
-//       <label htmlFor="search" className="sr-only">
-//         Search
-//       </label>
-//       <input
-//         type="text"
-//         id="search"
-//         className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
-//         placeholder={placeholder}
-//         onChange={(e) => {
-//           handleSearch(e.target.value);
-//         }}
-//       />
-//       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-//         <svg
-//           className="h-5 w-5 text-gray-400"
-//           xmlns="http://www.w3.org/2000/svg"
-//           fill="none"
-//           viewBox="0 0 24 24"
-//           stroke="currentColor"
-//         >
-//           <path
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth={2}
-//             d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
-//           />
-//         </svg>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import Pagination from "./Pagination";
+import SearchIcon from "../icons/SearchIcon";
 
 export default function Search({ placeholder, totalPages }) {
   const searchParams = useSearchParams();
@@ -78,10 +26,11 @@ export default function Search({ placeholder, totalPages }) {
     searchParams.get("maxSalary") || ""
   );
 
+  const [isFiltersVisible, setFiltersVisible] = useState(false);
+
   const handleSearch = useDebouncedCallback(() => {
     const params = new URLSearchParams();
 
-    // params.set("page", "1");
     if (page !== 1) {
       params.set("page", page);
     }
@@ -108,115 +57,142 @@ export default function Search({ placeholder, totalPages }) {
       setPage((prevPage) => prevPage - 1);
     }
   };
+
   const handleNext = () => {
     setPage((prevCount) => {
-      // Only increment if count is less than 10
       if (prevCount <= totalPages) {
-        console.log(prevCount);
         return prevCount + 1;
       } else {
-        return prevCount; // If the condition fails, return the current count
+        return prevCount;
       }
     });
   };
-  console.log(page, totalPages);
+
+  const toggleFilters = () => {
+    setFiltersVisible(!isFiltersVisible);
+  };
+
   return (
-    <div className="relative w-full">
-      <button
-        className="px-4 py-2 rounded-md text-white font-medium transition-colors bg-blue-500"
-        onClick={handlePrevious}
-        disabled={page <= 1}
-      >
-        Previous
-      </button>
-      <button
-        onClick={handleNext}
-        disabled={page >= totalPages}
-        className="px-4 py-2 rounded-md text-white font-medium transition-colors bg-green-500"
-      >
-        Next
-      </button>
-      <label htmlFor="search" className="sr-only">
-        Search
-      </label>
-      <input
-        type="text"
-        id="search"
-        className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
-        placeholder={placeholder}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+    <div className="relative w-full mx-auto p-4 bg-gray-50 rounded-lg shadow-md">
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
       />
 
-      {/* Filters */}
-      <div className="mt-4">
-        <label
-          htmlFor="work_arrangement"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Work Arrangement
-        </label>
-        <select
-          id="work_arrangement"
-          value={workArrangement}
-          onChange={(e) => setWorkArrangement(e.target.value)}
-          className="mt-1 block w-full p-2 border rounded-lg bg-white focus:ring focus:border-blue-500"
-        >
-          <option value="">Select</option>
+      <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+        {/* Improved Search Bar */}
+        <div className="relative w-full md:w-4/5">
+          <label htmlFor="search" className="sr-only">
+            Search
+          </label>
+          <div className="flex items-center">
+            <SearchIcon className="absolute left-3 text-gray-500 text-xl" />
+            <input
+              type="text"
+              id="search"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
+              placeholder={placeholder}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+        </div>
 
-          <option value="remote">Remote</option>
-          <option value="onsite">On-site</option>
-          <option value="hybrid">Hybrid</option>
-        </select>
-
-        <label
-          htmlFor="contract_type"
-          className="block text-sm font-medium text-gray-700 mt-4"
+        <button
+          onClick={toggleFilters}
+          className="inline-flex items-center px-4 py-2 border border-blue-500 text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
         >
-          Contract Type
-        </label>
-        <select
-          id="contract_type"
-          value={contractType}
-          onChange={(e) => setContractType(e.target.value)}
-          className="mt-1 block w-full p-2 border rounded-lg bg-white focus:ring focus:border-blue-500"
-        >
-          <option value="">Select</option>
+          {isFiltersVisible ? "Hide Filters" : "Apply Filters"}
+        </button>
+      </div>
 
-          <option value="Full-time">Full Time</option>
-          <option value="Part-time">Part Time</option>
-          <option value="Contract">Contract</option>
-        </select>
+      {/* Filters Dropdown */}
+      <div
+        className={`mt-4 overflow-hidden transition-all duration-500 ease-in-out transform ${
+          isFiltersVisible ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 border rounded-lg bg-white shadow-sm">
+          {/* Work Arrangement */}
+          <div>
+            <label
+              htmlFor="work_arrangement"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Work Arrangement
+            </label>
+            <select
+              id="work_arrangement"
+              value={workArrangement}
+              onChange={(e) => setWorkArrangement(e.target.value)}
+              className="mt-1 block w-full p-2 border rounded-lg bg-gray-50 focus:ring focus:border-blue-500"
+            >
+              <option value="">Select</option>
+              <option value="remote">Remote</option>
+              <option value="onsite">On-site</option>
+              <option value="hybrid">Hybrid</option>
+            </select>
+          </div>
 
-        <label
-          htmlFor="minSalary"
-          className="block text-sm font-medium text-gray-700 mt-4"
-        >
-          Minimum Salary
-        </label>
-        <input
-          type="number"
-          id="minSalary"
-          value={minSalary}
-          onChange={(e) => setMinSalary(e.target.value)}
-          className="mt-1 block w-full p-2 border rounded-lg bg-white focus:ring focus:border-blue-500"
-          placeholder="Min Salary"
-        />
+          {/* Contract Type */}
+          <div>
+            <label
+              htmlFor="contract_type"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Contract Type
+            </label>
+            <select
+              id="contract_type"
+              value={contractType}
+              onChange={(e) => setContractType(e.target.value)}
+              className="mt-1 block w-full p-2 border rounded-lg bg-gray-50 focus:ring focus:border-blue-500"
+            >
+              <option value="">Select</option>
+              <option value="Full-time">Full Time</option>
+              <option value="Part-time">Part Time</option>
+              <option value="Contract">Contract</option>
+            </select>
+          </div>
 
-        <label
-          htmlFor="maxSalary"
-          className="block text-sm font-medium text-gray-700 mt-4"
-        >
-          Maximum Salary
-        </label>
-        <input
-          type="number"
-          id="maxSalary"
-          value={maxSalary}
-          onChange={(e) => setMaxSalary(e.target.value)}
-          className="mt-1 block w-full p-2 border rounded-lg bg-white focus:ring focus:border-blue-500"
-          placeholder="Max Salary"
-        />
+          {/* Minimum Salary */}
+          <div>
+            <label
+              htmlFor="minSalary"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Minimum Salary
+            </label>
+            <input
+              type="number"
+              id="minSalary"
+              value={minSalary}
+              onChange={(e) => setMinSalary(e.target.value)}
+              className="mt-1 block w-full p-2 border rounded-lg bg-gray-50 focus:ring focus:border-blue-500"
+              placeholder="Min Salary"
+            />
+          </div>
+
+          {/* Maximum Salary */}
+          <div>
+            <label
+              htmlFor="maxSalary"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Maximum Salary
+            </label>
+            <input
+              type="number"
+              id="maxSalary"
+              value={maxSalary}
+              onChange={(e) => setMaxSalary(e.target.value)}
+              className="mt-1 block w-full p-2 border rounded-lg bg-gray-50 focus:ring focus:border-blue-500"
+              placeholder="Max Salary"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

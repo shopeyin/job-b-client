@@ -10,12 +10,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-       
         try {
           let user = null;
           user = await login(credentials);
 
-         
           if (!user) {
             throw new Error("User not found.");
           }
@@ -29,8 +27,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
 
   callbacks: {
-    jwt({ token,  user }) {
-      // console.log(user, token, "callback");
+    jwt({ token, user }) {
+      //
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -42,7 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     session({ session, token }) {
-      //  console.log(token, "SESSION");
+      //
       session.user.id = token.id;
       session.user.role = token.role;
       session.user.token = token.token;

@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { UpdateProfileFormAction } from "@/lib/actions";
 import { Toaster, toast } from "sonner";
 import { formatDateToYYYYMMDD } from "@/lib/utils";
+import DeleteMe from "./DeleteMe";
 
 function ProfileForm({ data, token }) {
   const [isPending, setIsPending] = useState(false);
   const [formData, setFormData] = useState({
-    name: data.name || "",
-    email: data.email || "",
-    skills: data.skills || [""],
-    workExperience: data.workExperience || [
+    name: data?.name || "",
+    email: data?.email || "",
+    skills: data?.skills || [""],
+    workExperience: data?.workExperience || [
       {
         company: "",
         title: "",
@@ -20,7 +21,7 @@ function ProfileForm({ data, token }) {
         description: "",
       },
     ],
-    education: data.education || [
+    education: data?.education || [
       {
         institution: "",
         degree: "",
@@ -31,6 +32,7 @@ function ProfileForm({ data, token }) {
       },
     ],
   });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -52,89 +54,43 @@ function ProfileForm({ data, token }) {
     setFormData({ ...formData, [arrayName]: updatedArray });
   };
 
-  const addSkillField = () => {
-    setFormData({ ...formData, skills: [...formData.skills, ""] });
-  };
-
-  const removeSkillField = (index) => {
-    const newSkills = [...formData.skills];
-    newSkills.splice(index, 1);
-    setFormData({ ...formData, skills: newSkills });
-  };
-
-  const addWorkExperienceField = () => {
+  const addArrayField = (arrayName, emptyField) => {
     setFormData({
       ...formData,
-      workExperience: [
-        ...formData.workExperience,
-        {
-          company: "",
-          title: "",
-          startDate: "",
-          endDate: "",
-          current: false,
-          description: "",
-        },
-      ],
+      [arrayName]: [...formData[arrayName], emptyField],
     });
   };
 
-  const removeWorkExperienceField = (index) => {
-    const newWorkExperience = [...formData.workExperience];
-    newWorkExperience.splice(index, 1);
-    setFormData({ ...formData, workExperience: newWorkExperience });
-  };
-
-  const addEducationField = () => {
-    setFormData({
-      ...formData,
-      education: [
-        ...formData.education,
-        {
-          institution: "",
-          degree: "",
-          fieldOfStudy: "",
-          startDate: "",
-          endDate: "",
-          current: false,
-        },
-      ],
-    });
-  };
-
-  const removeEducationField = (index) => {
-    const newEducation = [...formData.education];
-    newEducation.splice(index, 1);
-    setFormData({ ...formData, education: newEducation });
+  const removeArrayField = (index, arrayName) => {
+    const updatedArray = [...formData[arrayName]];
+    updatedArray.splice(index, 1);
+    setFormData({ ...formData, [arrayName]: updatedArray });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsPending(true);
-    await UpdateProfileFormAction(formData, token);
-    
+
+    // Submit form data using the action
+    let data = await UpdateProfileFormAction(formData, token);
     setIsPending(false);
-    toast.success("User updated", {
+
+    toast.success("Profile updated successfully!", {
       position: "top-center",
-      className: "bg-green-500",
       duration: 5000,
     });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Edit Profile</h1>
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
-          <input type="hidden" name="token" value={token} />
+    <div className="min-h-screen bg-gray-50 p-6 sm:p-8 lg:p-10">
+      <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 lg:p-10 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-blue-800 mb-6">Edit Profile</h1>
 
-          {/* Name Field */}
-          <div className="col-span-1">
-            <div className="mb-6">
-              <label className="block text-gray-700 font-semibold mb-2">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Name and Email */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
                 Name
               </label>
               <input
@@ -142,42 +98,42 @@ function ProfileForm({ data, token }) {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 font-semibold mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
           </div>
 
-          {/* Skills Field */}
-          <div className="col-span-1">
-            <label className="block text-gray-700 font-semibold mb-2">
+          {/* Skills */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
               Skills
             </label>
             {formData.skills.map((skill, index) => (
-              <div key={index} className="flex items-center mb-4">
+              <div key={index} className="flex items-center space-x-2 mt-2">
                 <input
                   type="text"
                   value={skill}
                   onChange={(e) =>
                     handleArrayChange(index, null, e.target.value, "skills")
                   }
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="flex-grow p-2 border border-gray-300 rounded-md"
                 />
                 <button
                   type="button"
-                  onClick={() => removeSkillField(index)}
-                  className="ml-2 bg-red-500 text-white p-2 rounded"
+                  onClick={() => removeArrayField(index, "skills")}
+                  className="px-3 py-1 text-sm bg-orange text-white rounded hover:bg-dark-gray"
                 >
                   Remove
                 </button>
@@ -185,303 +141,304 @@ function ProfileForm({ data, token }) {
             ))}
             <button
               type="button"
-              onClick={addSkillField}
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              onClick={() => addArrayField("skills", "")}
+              className="mt-3 px-4 py-2 bg-teal text-white rounded hover:bg-dark-blue"
             >
               Add Skill
             </button>
           </div>
 
           {/* Work Experience */}
-          <div className="col-span-1 md:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">
               Work Experience
             </h2>
-            <div>
-              {formData.workExperience.map((experience, index) => (
-                <div
-                  key={index}
-                  className="mb-6 p-4 border border-gray-300 rounded-md shadow-sm"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {formData.workExperience.map((experience, index) => (
+              <div
+                key={index}
+                className="p-4 mt-4 border border-gray-300 rounded-lg shadow-sm"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Company
+                    </label>
+                    <input
+                      type="text"
+                      value={experience.company}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "company",
+                          e.target.value,
+                          "workExperience"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      value={experience.title}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "title",
+                          e.target.value,
+                          "workExperience"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      value={formatDateToYYYYMMDD(experience.startDate)}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "startDate",
+                          e.target.value,
+                          "workExperience"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  {!experience.current && (
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Company
-                      </label>
-                      <input
-                        type="text"
-                        value={experience.company}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "company",
-                            e.target.value,
-                            "workExperience"
-                          )
-                        }
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Title
-                      </label>
-                      <input
-                        type="text"
-                        value={experience.title}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "title",
-                            e.target.value,
-                            "workExperience"
-                          )
-                        }
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Start Date
+                      <label className="block text-sm font-medium text-gray-700">
+                        End Date
                       </label>
                       <input
                         type="date"
-                        value={formatDateToYYYYMMDD(experience.startDate)}
+                        value={experience.endDate || ""}
                         onChange={(e) =>
                           handleArrayChange(
                             index,
-                            "startDate",
+                            "endDate",
                             e.target.value,
                             "workExperience"
                           )
                         }
-                        className="w-full p-2 border border-gray-300 rounded-md"
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                       />
                     </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={experience.current}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "current",
-                            e.target.checked,
-                            "workExperience"
-                          )
-                        }
-                      />
-                      <label className="ml-2">Current</label>
-                    </div>
-                    {!experience.current && (
-                      <div>
-                        <label className="block text-gray-700 font-semibold mb-2">
-                          End Date
-                        </label>
-                        <input
-                          type="date"
-                          value={experience.endDate || ""}
-                          onChange={(e) =>
-                            handleArrayChange(
-                              index,
-                              "endDate",
-                              e.target.value,
-                              "workExperience"
-                            )
-                          }
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                        />
-                      </div>
-                    )}
-                    <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Description
-                      </label>
-                      <textarea
-                        value={experience.description}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "description",
-                            e.target.value,
-                            "workExperience"
-                          )
-                        }
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeWorkExperienceField(index)}
-                    className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                  >
-                    Remove Experience
-                  </button>
+                  )}
                 </div>
-              ))}
-              <button
-                type="button"
-                onClick={addWorkExperienceField}
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                Add Experience
-              </button>
-            </div>
+                <div className="mt-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Description
+                  </label>
+                  <textarea
+                    value={experience.description}
+                    onChange={(e) =>
+                      handleArrayChange(
+                        index,
+                        "description",
+                        e.target.value,
+                        "workExperience"
+                      )
+                    }
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeArrayField(index, "workExperience")}
+                  className="mt-3 px-4 py-2 bg-orange text-white rounded hover:bg-dark-gray"
+                >
+                  Remove Experience
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() =>
+                addArrayField("workExperience", {
+                  company: "",
+                  title: "",
+                  startDate: "",
+                  endDate: "",
+                  current: false,
+                  description: "",
+                })
+              }
+              className="mt-3 px-4 py-2 bg-teal text-white rounded hover:bg-dark-blue"
+            >
+              Add Experience
+            </button>
           </div>
 
           {/* Education */}
-          <div className="col-span-1 md:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">
-              Education
-            </h2>
-            <div>
-              {formData.education.map((education, index) => (
-                <div
-                  key={index}
-                  className="mb-6 p-4 border border-gray-300 rounded-md shadow-sm"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Education</h2>
+            {formData.education.map((edu, index) => (
+              <div
+                key={index}
+                className="p-4 mt-4 border border-gray-300 rounded-lg shadow-sm"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Institution
+                    </label>
+                    <input
+                      type="text"
+                      value={edu.institution}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "institution",
+                          e.target.value,
+                          "education"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Degree
+                    </label>
+                    <input
+                      type="text"
+                      value={edu.degree}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "degree",
+                          e.target.value,
+                          "education"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Field of Study
+                    </label>
+                    <input
+                      type="text"
+                      value={edu.fieldOfStudy}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "fieldOfStudy",
+                          e.target.value,
+                          "education"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      value={formatDateToYYYYMMDD(edu.startDate)}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "startDate",
+                          e.target.value,
+                          "education"
+                        )
+                      }
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  {!edu.current && (
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Institution
-                      </label>
-                      <input
-                        type="text"
-                        value={education.institution}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "institution",
-                            e.target.value,
-                            "education"
-                          )
-                        }
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Degree
-                      </label>
-                      <input
-                        type="text"
-                        value={education.degree}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "degree",
-                            e.target.value,
-                            "education"
-                          )
-                        }
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Field of Study
-                      </label>
-                      <input
-                        type="text"
-                        value={education.fieldOfStudy}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "fieldOfStudy",
-                            e.target.value,
-                            "education"
-                          )
-                        }
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
-                        Start Date
+                      <label className="block text-sm font-medium text-gray-700">
+                        End Date
                       </label>
                       <input
                         type="date"
-                        value={formatDateToYYYYMMDD(education.startDate)}
+                        value={edu.endDate || ""}
                         onChange={(e) =>
                           handleArrayChange(
                             index,
-                            "startDate",
+                            "endDate",
                             e.target.value,
                             "education"
                           )
                         }
-                        className="w-full p-2 border border-gray-300 rounded-md"
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                       />
                     </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={education.current}
-                        onChange={(e) =>
-                          handleArrayChange(
-                            index,
-                            "current",
-                            e.target.checked,
-                            "education"
-                          )
-                        }
-                      />
-                      <label className="ml-2">Current</label>
-                    </div>
-                    {!education.current && (
-                      <div>
-                        <label className="block text-gray-700 font-semibold mb-2">
-                          End Date
-                        </label>
-                        <input
-                          type="date"
-                          value={education.endDate || ""}
-                          onChange={(e) =>
-                            handleArrayChange(
-                              index,
-                              "endDate",
-                              e.target.value,
-                              "education"
-                            )
-                          }
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeEducationField(index)}
-                    className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                  >
-                    Remove Education
-                  </button>
+                  )}
                 </div>
-              ))}
-              <button
-                type="button"
-                onClick={addEducationField}
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                Add Education
-              </button>
-            </div>
-          </div>
-
-          {/* Submit */}
-          <div className="col-span-1 md:col-span-2">
+                <button
+                  type="button"
+                  onClick={() => removeArrayField(index, "education")}
+                  className="mt-3 px-4 py-2 bg-orange text-white rounded hover:bg-dark-gray"
+                >
+                  Remove Education
+                </button>
+              </div>
+            ))}
             <button
-              type="submit"
-              disabled={isPending}
-              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+              type="button"
+              onClick={() =>
+                addArrayField("education", {
+                  institution: "",
+                  degree: "",
+                  fieldOfStudy: "",
+                  startDate: "",
+                  endDate: "",
+                  current: false,
+                })
+              }
+              className="mt-3 px-4 py-2 bg-teal text-white rounded hover:bg-dark-blue"
             >
-              {isPending ? "Updating..." : "Update"}
+              Add Education
             </button>
           </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full px-4 py-2 bg-teal text-white rounded hover:bg-dark-blue disabled:opacity-50"
+          >
+            {isPending ? "Saving..." : "Save Changes"}
+          </button>
         </form>
-        <Toaster />
       </div>
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg mt-8">
+        <div className="p-4 bg-red-100 border border-red-300 rounded-lg">
+          <h2 className="text-lg font-semibold text-red-800">
+            Delete My Account
+          </h2>
+          <p className="mt-2 text-sm text-red-700">
+            This action is irreversible. Deleting your account will permanently
+            remove all your data. If you are sure you want to proceed, click the
+            button below.
+          </p>
+          <DeleteMe />
+          {/* <button
+            type="button"
+            onClick={handleDeleteAccount}
+            className="mt-4 px-4 py-2 bg-orange text-white rounded hover:bg-dark-gray"
+          >
+            Delete Account
+          </button> */}
+        </div>
+      </div>
+
+      <Toaster />
     </div>
   );
 }

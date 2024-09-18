@@ -5,7 +5,6 @@ import { getAllApplicationsByJob } from "@/lib/api";
 async function Applications({ params: { id } }) {
   const applications = await getAllApplicationsByJob(id);
 
-
   return (
     <div className="max-w-7xl mx-auto p-4">
       {applications.length === 0 ? (
@@ -30,7 +29,14 @@ async function Applications({ params: { id } }) {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Resume</h3>
-                  <p className="text-gray-700">{app.resume}</p>
+                  <a
+                    href={app.resume}
+                    target="_blank" // Opens the resume in a new tab
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 mt-1 underline cursor-pointer"
+                  >
+                    View Resume
+                  </a>
                 </div>
               </div>
 
@@ -49,7 +55,11 @@ async function Applications({ params: { id } }) {
                   </span>
                 </div>
                 <div className="text-sm">
-                  <ApplicationComponent  jobId={id} applicationId={app._id} status={app.status} />
+                  <ApplicationComponent
+                    jobId={id}
+                    applicationId={app._id}
+                    status={app.status}
+                  />
                 </div>
               </div>
             </div>

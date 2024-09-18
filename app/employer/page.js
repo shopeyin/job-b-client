@@ -15,7 +15,7 @@ export default async function EmployerDashboard() {
   if (user?.role !== "employer") {
     redirect("/");
   }
- console.log('employer path called')
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -74,33 +74,6 @@ export default async function EmployerDashboard() {
           </div>
         </section>
 
-        {/* Recent Activity Section */}
-        <section className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Recent Activity
-          </h2>
-          <ul className="space-y-4">
-            <li className="flex justify-between">
-              <span className="text-gray-700">
-                Posted a new job for "Software Engineer"
-              </span>
-              <span className="text-sm text-gray-500">2 days ago</span>
-            </li>
-            <li className="flex justify-between">
-              <span className="text-gray-700">
-                Scheduled an interview with "John Doe"
-              </span>
-              <span className="text-sm text-gray-500">3 days ago</span>
-            </li>
-            <li className="flex justify-between">
-              <span className="text-gray-700">
-                Marked "Data Analyst" position as filled
-              </span>
-              <span className="text-sm text-gray-500">5 days ago</span>
-            </li>
-          </ul>
-        </section>
-
         {/* Quick Actions Section */}
         <section className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -108,18 +81,18 @@ export default async function EmployerDashboard() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Link
-              href="/employer/manage-jobs/new"
+              href="/employer/manage-jobs/create-jobs"
               className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-lg flex items-center justify-center"
             >
               Post New Job
             </Link>
 
-            <Link
+            {/* <Link
               href="/employer/manage-applications"
               className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-lg flex items-center justify-center"
             >
               View Applications
-            </Link>
+            </Link> */}
           </div>
         </section>
       </div>

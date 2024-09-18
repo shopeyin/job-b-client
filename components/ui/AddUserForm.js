@@ -21,8 +21,7 @@ function AddUserForm() {
       setNotify(message);
     }
   }, [message]);
-  console.log(message);
-  console.log(notify, "NOTIFY");
+
   return (
     <>
       <button
@@ -35,7 +34,6 @@ function AddUserForm() {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-2xl font-semibold mb-4">Add New User</h2>
-           
 
             {notify?.status === "success" ? (
               <div className="bg-green-100 border mb-8  text-green-800 p-4 rounded-lg">
