@@ -11,7 +11,7 @@ function SignUpForm() {
   return (
     <main className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-        <h1 className="text-3xl font-extrabold mb-8 text-center text-gray-800">
+        <h1 className="text-3xl font-extrabold mb-8 text-center text-dark-blue">
           Create an Account
         </h1>
 
@@ -31,7 +31,7 @@ function SignUpForm() {
               name="name"
               defaultValue={formState?.fieldData?.name}
               placeholder="Full Name"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-light-blue focus:border-transparent placeholder-gray-500"
             />
           </div>
 
@@ -47,7 +47,7 @@ function SignUpForm() {
               name="email"
               defaultValue={formState?.fieldData?.email}
               placeholder="Email Address"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-light-blue focus:border-transparent placeholder-gray-500"
             />
           </div>
 
@@ -62,7 +62,7 @@ function SignUpForm() {
               type="password"
               name="password"
               placeholder="Password"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-light-blue focus:border-transparent placeholder-gray-500"
             />
           </div>
 
@@ -77,7 +77,7 @@ function SignUpForm() {
               type="password"
               name="passwordConfirm"
               placeholder="Confirm Password"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-light-blue focus:border-transparent placeholder-gray-500"
             />
           </div>
 
@@ -86,7 +86,7 @@ function SignUpForm() {
             <select
               name="role"
               defaultValue={formState?.fieldData?.role}
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-light-blue focus:border-transparent placeholder-gray-500"
             >
               <option value="job_seeker">Job Seeker</option>
               <option value="employer">Employer</option>
@@ -99,7 +99,7 @@ function SignUpForm() {
               type="submit"
               disabled={isPending}
               aria-disabled={isPending}
-              className="w-full flex justify-center items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out"
+              className="w-full flex justify-center items-center bg-dark-blue hover:bg-teal text-white font-semibold py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-light-blue focus:ring-offset-2 transition duration-200 ease-in-out"
             >
               {isPending ? "Signing up..." : "Sign up"}
             </button>

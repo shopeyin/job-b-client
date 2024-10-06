@@ -41,7 +41,7 @@ export default function Search({ placeholder, totalPages }) {
     if (maxSalary) params.set("maxSalary", maxSalary);
 
     replace(`${pathname}?${params.toString()}`);
-  }, 2000);
+  }, 1000);
 
   useEffect(() => {
     handleSearch(); // Update URL when any filter changes

@@ -2,15 +2,23 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import CompanyProfileForm from "@/components/ui/CompanyProfileForm";
-import { getCompanyByCreator } from "@/lib/api";
+import { getActiveJobStat, getCompanyByCreator } from "@/lib/api";
 
 export default async function EmployerDashboard() {
   const session = await auth();
   const user = session?.user;
 
+
+
+  const [companyData, activeJobData] = await Promise.all([
+    getCompanyByCreator(),
+    getActiveJobStat(user?.token),
+  ]);
+
+  // Extract the company information from companyData
   const {
     user: { company },
-  } = await getCompanyByCreator();
+  } = companyData;
 
   if (user?.role !== "employer") {
     redirect("/");
@@ -37,7 +45,9 @@ export default async function EmployerDashboard() {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 className="text-xl font-semibold text-gray-700">Active Jobs</h2>
-            <p className="text-3xl font-bold text-blue-600 mt-2">5</p>
+            <p className="text-3xl font-bold text-blue-600 mt-2">
+              {activeJobData.data.activeJobsCount}
+            </p>
             <p className="text-gray-600 mt-1">Total active job postings</p>
             <Link
               href="/employer/manage-jobs"

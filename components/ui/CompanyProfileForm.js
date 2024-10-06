@@ -1,13 +1,24 @@
 "use client";
 
 import { updateCompanyAction } from "@/lib/actions";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function CompanyProfileForm({ company }) {
-  const [errorMessage, formAction, isPending] = useActionState(
+  const [formState, formAction, isPending] = useActionState(
     updateCompanyAction.bind(null, company?._id),
     undefined
   );
+
+  useEffect(() => {
+    if (formState?.fieldData?.message) {
+      toast.success("Form Updated", {
+        position: "top-center",
+        className: "bg-green-500",
+        duration: 5000,
+      });
+    }
+  }, [formState?.fieldData?.message]);
 
   return (
     <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
@@ -66,6 +77,37 @@ export default function CompanyProfileForm({ company }) {
             required
           />
         </div>
+        {/* Logo */}
+        <div className="my-5">
+          <label
+            htmlFor="logo"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Upload Company Logo
+          </label>
+
+          {/* File input styled with Tailwind */}
+          <input
+            type="file"
+            id="logo"
+            accept="image/*"
+            name="logo"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          />
+
+          {/* Display the current logo or the new selected image */}
+          <div className="mt-4">
+            <h4 className="text-sm font-medium text-gray-700">
+              Current/Selected Logo
+            </h4>
+
+            <img
+              src={company?.logo || `https://via.placeholder.com/100`}
+              alt="Company Logo"
+              className="mt-2 w-32 h-32 object-cover rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
 
         {/* Description */}
         <div className="mb-4">
@@ -91,11 +133,11 @@ export default function CompanyProfileForm({ company }) {
           disabled={isPending}
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          {isPending ? "updating...." : "update"}
+          {isPending ? "Updating...." : "Update Company"}
         </button>
-        {errorMessage && (
+        {formState && (
           <p className="mt-2 text-center text-sm text-red-600">
-            {errorMessage.message}
+            {formState.message}
           </p>
         )}
       </form>

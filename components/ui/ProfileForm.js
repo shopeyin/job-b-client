@@ -6,6 +6,7 @@ import { formatDateToYYYYMMDD } from "@/lib/utils";
 import DeleteMe from "./DeleteMe";
 
 function ProfileForm({ data, token }) {
+  console.log(data);
   const [isPending, setIsPending] = useState(false);
   const [formData, setFormData] = useState({
     name: data?.name || "",
@@ -72,7 +73,8 @@ function ProfileForm({ data, token }) {
     setIsPending(true);
 
     // Submit form data using the action
-    let data = await UpdateProfileFormAction(formData, token);
+    console.log(formData);
+    await UpdateProfileFormAction(formData, token);
     setIsPending(false);
 
     toast.success("Profile updated successfully!", {
@@ -213,6 +215,24 @@ function ProfileForm({ data, token }) {
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     />
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Current
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={experience.current}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "current",
+                          e.target.checked,
+                          "workExperience"
+                        )
+                      }
+                      className="mt-1"
+                    />
+                  </div>
                   {!experience.current && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
@@ -220,7 +240,8 @@ function ProfileForm({ data, token }) {
                       </label>
                       <input
                         type="date"
-                        value={experience.endDate || ""}
+                        value={formatDateToYYYYMMDD(experience?.endDate)}
+                      
                         onChange={(e) =>
                           handleArrayChange(
                             index,
@@ -359,6 +380,24 @@ function ProfileForm({ data, token }) {
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     />
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Current
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={edu.current}
+                      onChange={(e) =>
+                        handleArrayChange(
+                          index,
+                          "current",
+                          e.target.checked,
+                          "education"
+                        )
+                      }
+                      className="mt-1"
+                    />
+                  </div>
                   {!edu.current && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
@@ -366,7 +405,7 @@ function ProfileForm({ data, token }) {
                       </label>
                       <input
                         type="date"
-                        value={edu.endDate || ""}
+                        value={formatDateToYYYYMMDD(edu?.endDate)}
                         onChange={(e) =>
                           handleArrayChange(
                             index,

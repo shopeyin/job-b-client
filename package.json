@@ -11,6 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.651.1",
     "@heroicons/react": "^2.1.5",
+    "@sentry/nextjs": "^8.30.0",
     "axios": "^1.7.7",
     "job-b": "file:",
     "next": "14.3.0-canary.47",

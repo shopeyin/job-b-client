@@ -1,8 +1,9 @@
 // "use client";
 
-// import { createJob } from "@/lib/api";
-// import { useRouter } from "next/navigation";
-// import { useState } from "react";
+// import { createJobAction } from "@/lib/actions";
+// import { formatDateToYYYYMMDD } from "@/lib/utils";
+
+// import { useActionState, useState, useEffect } from "react";
 // import { toast } from "sonner";
 
 // const industries = [
@@ -21,7 +22,7 @@
 //   "Other",
 // ];
 
-// export default function CreateJobForm({ token }) {
+// export default function CreateJobForm() {
 //   const initialFormData = {
 //     title: "",
 //     description: "",
@@ -32,19 +33,23 @@
 //     salaryMax: "",
 //     workArrangement: "",
 //     contractType: "",
+//     closing_date: "",
 //   };
+//   const [formState, formAction, isPending] = useActionState(
+//     createJobAction,
+//     undefined
+//   );
 //   const [formData, setFormData] = useState(initialFormData);
-//   const [isPending, setIsPending] = useState(false);
 
-//   let router = useRouter();
-//   // Handle input changes
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       [name]: value,
-//     }));
-//   };
+//   useEffect(() => {
+//     if (formState?.message) {
+//       toast.error(formState?.message, {
+//         position: "top-center",
+//         className: "bg-red-500",
+//         duration: 5000,
+//       });
+//     }
+//   }, [formState]);
 
 //   // Handle adding a new requirement
 //   const handleAddRequirement = () => {
@@ -62,49 +67,12 @@
 //     }));
 //   };
 
-//   // Handle change in requirement input
-//   const handleRequirementChange = (index, value) => {
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       requirements: prevState.requirements.map((req, i) =>
-//         i === index ? value : req
-//       ),
-//     }));
-//   };
-
-//   // Handle form submission
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const jobData = {
-//       title: formData.title,
-//       description: formData.description,
-//       requirements: formData.requirements,
-//       location: formData.location,
-//       industry: formData.industry,
-//       salary: {
-//         min: formData.salaryMin,
-//         max: formData.salaryMax,
-//       },
-//       work_arrangement: formData.workArrangement,
-//       contract_type: formData.contractType,
-//     };
-//     setIsPending(true);
-//     await createJob(jobData, token);
-//     setIsPending(false);
-//     setFormData(initialFormData);
-//     toast.success("Job created", {
-//       position: "top-center",
-//       className: "bg-green-500",
-//       duration: 5000,
-//     });
-//     router.push("/employer/manage-jobs");
-//   };
+//   console.log(formState);
 
 //   return (
 //     <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
 //       <h1 className="text-2xl font-bold mb-6">Create Job</h1>
-//       <form onSubmit={handleSubmit}>
+//       <form action={formAction}>
 //         {/* Job Title */}
 //         <div className="mb-4">
 //           <label
@@ -116,11 +84,9 @@
 //           <input
 //             type="text"
 //             id="title"
+//             defaultValue={formState?.fieldData?.title}
 //             name="title"
 //             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//             value={formData.title}
-//             onChange={handleChange}
-//             required
 //           />
 //         </div>
 
@@ -135,11 +101,12 @@
 //           <textarea
 //             id="description"
 //             name="description"
+//             defaultValue={formState?.fieldData?.description}
 //             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//             value={formData.description}
-//             onChange={handleChange}
-//             rows="4"
-//             required
+//             // value={formData.description}
+//             // onChange={handleChange}
+//             // rows="4"
+//             // required
 //           ></textarea>
 //         </div>
 
@@ -152,8 +119,10 @@
 //             <div key={index} className="flex items-center mb-2">
 //               <input
 //                 type="text"
-//                 value={requirement}
-//                 onChange={(e) => handleRequirementChange(index, e.target.value)}
+//                 // value={requirement}
+
+//                 name={`Requirement ${index + 1}`}
+//                 // onChange={(e) => handleRequirementChange(index, e.target.value)}
 //                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 //                 placeholder={`Requirement ${index + 1}`}
 //               />
@@ -187,9 +156,8 @@
 //             type="text"
 //             id="location"
 //             name="location"
+//             defaultValue={formState?.fieldData?.location}
 //             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//             value={formData.location}
-//             onChange={handleChange}
 //             required
 //           />
 //         </div>
@@ -206,9 +174,8 @@
 //             id="industry"
 //             name="industry"
 //             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//             value={formData.industry}
-//             onChange={handleChange}
 //             required
+//             defaultValue={formState?.fieldData?.industry}
 //           >
 //             <option value="">Select Industry</option>
 //             {industries.map((industry) => (
@@ -232,9 +199,10 @@
 //               type="number"
 //               id="salaryMin"
 //               name="salaryMin"
+//               defaultValue={formState?.fieldData?.salary?.min}
 //               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//               value={formData.salaryMin}
-//               onChange={handleChange}
+//               // value={formData.salaryMin}
+//               // onChange={handleChange}
 //               required
 //             />
 //           </div>
@@ -249,12 +217,29 @@
 //               type="number"
 //               id="salaryMax"
 //               name="salaryMax"
+//               defaultValue={formState?.fieldData?.salary?.max}
 //               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//               value={formData.salaryMax}
-//               onChange={handleChange}
+//               // value={formData.salaryMax}
+//               // onChange={handleChange}
 //               required
 //             />
 //           </div>
+//         </div>
+
+//         <div className="mb-4">
+//           <label className="block text-sm font-medium text-gray-700">
+//             Closing Date
+//           </label>
+//           <input
+//             type="date"
+//             name="closing_date"
+//             defaultValue={formatDateToYYYYMMDD(
+//               formState?.fieldData?.closing_date
+//             )}
+//             // value={formatDateToYYYYMMDD(experience.startDate)}
+//             // onChange={""}
+//             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+//           />
 //         </div>
 
 //         {/* Work Arrangement */}
@@ -267,10 +252,11 @@
 //           </label>
 //           <select
 //             id="workArrangement"
-//             name="workArrangement"
+//             name="work_arrangement"
 //             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//             value={formData.workArrangement}
-//             onChange={handleChange}
+//             // value={formData.workArrangement}
+//             // onChange={handleChange}
+//             defaultValue={formState?.fieldData?.work_arrangement}
 //             required
 //           >
 //             <option value="">Select Work Arrangement</option>
@@ -283,18 +269,17 @@
 //         {/* Contract Type */}
 //         <div className="mb-4">
 //           <label
-//             htmlFor="contractType"
+//             htmlFor="contract_Type"
 //             className="block text-sm font-medium text-gray-700"
 //           >
 //             Contract Type
 //           </label>
 //           <select
 //             id="contractType"
-//             name="contractType"
+//             name="contract_type"
 //             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-//             value={formData.contractType}
-//             onChange={handleChange}
 //             required
+//             defaultValue={formState?.fieldData?.contract_type}
 //           >
 //             <option value="">Select Contract Type</option>
 //             <option value="Full-time">Full Time</option>
@@ -318,6 +303,7 @@
 "use client";
 
 import { createJobAction } from "@/lib/actions";
+import { formatDateToYYYYMMDD } from "@/lib/utils";
 
 import { useActionState, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -349,22 +335,23 @@ export default function CreateJobForm() {
     salaryMax: "",
     workArrangement: "",
     contractType: "",
+    closing_date: "",
   };
-  const [errorMessage, formAction, isPending] = useActionState(
+  const [formState, formAction, isPending] = useActionState(
     createJobAction,
     undefined
   );
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage, {
+    if (formState?.message) {
+      toast.error(formState?.message, {
         position: "top-center",
         className: "bg-red-500",
         duration: 5000,
       });
     }
-  }, [errorMessage]);
+  }, [formState]);
 
   // Handle adding a new requirement
   const handleAddRequirement = () => {
@@ -382,6 +369,8 @@ export default function CreateJobForm() {
     }));
   };
 
+  console.log(formState);
+
   return (
     <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6">Create Job</h1>
@@ -397,6 +386,7 @@ export default function CreateJobForm() {
           <input
             type="text"
             id="title"
+            defaultValue={formState?.fieldData?.title}
             name="title"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
@@ -413,6 +403,7 @@ export default function CreateJobForm() {
           <textarea
             id="description"
             name="description"
+            defaultValue={formState?.fieldData?.description}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             // value={formData.description}
             // onChange={handleChange}
@@ -431,6 +422,7 @@ export default function CreateJobForm() {
               <input
                 type="text"
                 // value={requirement}
+
                 name={`Requirement ${index + 1}`}
                 // onChange={(e) => handleRequirementChange(index, e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -466,9 +458,8 @@ export default function CreateJobForm() {
             type="text"
             id="location"
             name="location"
+            defaultValue={formState?.fieldData?.location}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            // value={formData.location}
-            // onChange={handleChange}
             required
           />
         </div>
@@ -486,6 +477,7 @@ export default function CreateJobForm() {
             name="industry"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
+            defaultValue={formState?.fieldData?.industry}
           >
             <option value="">Select Industry</option>
             {industries.map((industry) => (
@@ -509,6 +501,7 @@ export default function CreateJobForm() {
               type="number"
               id="salaryMin"
               name="salaryMin"
+              defaultValue={formState?.fieldData?.salary?.min}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               // value={formData.salaryMin}
               // onChange={handleChange}
@@ -526,12 +519,29 @@ export default function CreateJobForm() {
               type="number"
               id="salaryMax"
               name="salaryMax"
+              defaultValue={formState?.fieldData?.salary?.max}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               // value={formData.salaryMax}
               // onChange={handleChange}
               required
             />
           </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Closing Date
+          </label>
+          <input
+            type="date"
+            name="closing_date"
+            defaultValue={formatDateToYYYYMMDD(
+              formState?.fieldData?.closing_date
+            )}
+            // value={formatDateToYYYYMMDD(experience.startDate)}
+            // onChange={""}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
         </div>
 
         {/* Work Arrangement */}
@@ -548,6 +558,7 @@ export default function CreateJobForm() {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             // value={formData.workArrangement}
             // onChange={handleChange}
+            defaultValue={formState?.fieldData?.work_arrangement}
             required
           >
             <option value="">Select Work Arrangement</option>
@@ -570,6 +581,7 @@ export default function CreateJobForm() {
             name="contract_type"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
+            defaultValue={formState?.fieldData?.contract_type}
           >
             <option value="">Select Contract Type</option>
             <option value="Full-time">Full Time</option>

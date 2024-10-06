@@ -3,7 +3,7 @@ import { getCompany } from "@/lib/api";
 async function Company({ params: { id } }) {
   let data = await getCompany(id);
   const company = data?.company || {};
-  const createdBy = company.created_by || {};
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -12,7 +12,7 @@ async function Company({ params: { id } }) {
         <div className="flex items-center space-x-4">
           <img
             src={
-              company.logo ? `/images/${company.logo}` : "/images/default.jpg"
+              company.logo ? `${company.logo}` : "/images/default.jpg"
             } // Fallback image
             alt={`${company.name || "Company Logo"}`}
             className="w-16 h-16 object-cover rounded-full shadow-md"

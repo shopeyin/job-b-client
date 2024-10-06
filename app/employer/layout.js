@@ -15,14 +15,15 @@ const employerNavItems = [
     href: "/employer/manage-jobs",
     icon: BriefCaseIcon,
   },
-  {
-    label: "Manage Applications",
-    href: "/employer/manage-applications",
-    icon: ClipBoardIcon,
-  },
+,
   {
     label: "Candidates",
     href: "/employer/candidates",
+    icon: UsersIcon,
+  },
+  {
+    label: "Employer",
+    href: "/employer",
     icon: UsersIcon,
   },
 ];
