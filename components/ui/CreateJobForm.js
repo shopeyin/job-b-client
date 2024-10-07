@@ -369,7 +369,7 @@ export default function CreateJobForm() {
     }));
   };
 
-  console.log(formState);
+  // console.log(formState);
 
   return (
     <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
