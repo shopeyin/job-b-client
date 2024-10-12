@@ -30,11 +30,11 @@ async function Company({ params: { id } }) {
           </div>
         </div>
 
-        {/* About Section */}
+      
         <div className="mt-8">
           <h2 className="text-2xl font-semibold text-dark-blue">About Us</h2>
           <p className="text-gray-700 mt-4">
-            {/* You can include additional details or description here if available */}
+           
             {company.description || "No description available."}
           </p>
         </div>

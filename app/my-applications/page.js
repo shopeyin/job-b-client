@@ -1,6 +1,6 @@
 import { getAllApplicationsByUser } from "@/lib/api";
 
-async function Page() {
+async function MyApplications() {
   const { applications } = await getAllApplicationsByUser();
 
   return (
@@ -90,4 +90,4 @@ async function Page() {
   );
 }
 
-export default Page;
+export default MyApplications;

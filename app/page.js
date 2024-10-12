@@ -1,7 +1,7 @@
-import Pagination from "@/components/ui/Pagination";
 import { fetchJobs } from "../lib/api";
 import Search from "@/components/ui/Search";
 import Link from "next/link";
+
 export const revalidate = 0;
 
 export default async function Home({ searchParams }) {
@@ -12,12 +12,11 @@ export default async function Home({ searchParams }) {
   return (
     <main className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 border-b border-gray-200 bg-dark-blue text-white">
+        <header className="flex flex-col sm:flex-row rounded justify-center items-start sm:items-center py-4 sm:py-6 border-b border-gray-200 bg-dark-blue text-white">
           <h1 className="text-3xl sm:text-4xl font-bold">Job Board</h1>
         </header>
 
         <div className="mt-6 sm:mt-8">
-          {/* <Pagination count={data?.total} /> */}
           <Search totalPages={data.totalPages} />
           <p className="text-gray-700 mt-2 text-sm sm:text-base">
             {data.results} results

@@ -27,7 +27,7 @@ export default async function EmployerDashboard() {
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Welcome Section */}
+        
         <section className="bg-white p-6 rounded-lg shadow-md">
           <h1 className="text-3xl font-semibold text-gray-800">
             Welcome, {user?.name}!
@@ -36,12 +36,12 @@ export default async function EmployerDashboard() {
             Here's an overview of your hiring activities.
           </p>
         </section>
-        {/* Company Profile Form */}
+       
         <section className="bg-white p-8 rounded-lg shadow-md">
           <CompanyProfileForm company={company} />
         </section>
 
-        {/* Stats Section */}
+       
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 className="text-xl font-semibold text-gray-700">Active Jobs</h2>

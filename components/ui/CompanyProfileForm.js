@@ -5,6 +5,7 @@ import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function CompanyProfileForm({ company }) {
+ 
   const [formState, formAction, isPending] = useActionState(
     updateCompanyAction.bind(null, company?._id),
     undefined
@@ -17,8 +18,11 @@ export default function CompanyProfileForm({ company }) {
         className: "bg-green-500",
         duration: 5000,
       });
+
+      formState.fieldData.message = null;
     }
   }, [formState?.fieldData?.message]);
+ 
 
   return (
     <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
@@ -110,7 +114,7 @@ export default function CompanyProfileForm({ company }) {
         </div>
 
         {/* Description */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label
             htmlFor="description"
             className="block text-sm font-medium text-gray-700"
@@ -125,7 +129,7 @@ export default function CompanyProfileForm({ company }) {
             required
             rows="4"
           ></textarea>
-        </div>
+        </div> */}
 
         {/* Submit Button */}
         <button

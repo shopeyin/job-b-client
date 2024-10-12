@@ -28,6 +28,7 @@ export default function LoginForm() {
             </a>
           </p>
         </div>
+
         <form className="mt-8 space-y-6" action={formAction}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
@@ -43,7 +44,6 @@ export default function LoginForm() {
                 id="email"
                 name="email"
                 type="email"
-                defaultValue={formState?.fieldData?.email}
                 required
                 className={`relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-light-blue focus:outline-none focus:ring-light-blue sm:text-sm ${
                   formState?.errors?.email ? "border-red-500" : ""
@@ -109,6 +109,30 @@ export default function LoginForm() {
             </button>
           </div>
         </form>
+        {/* Instructions for test users */}
+        <div className="mt-4 p-4 bg-white shadow rounded-md text-sm">
+          <p className="text-gray-800 text-center mb-2">Test Credentials:</p>
+          <div className="space-y-2">
+            {/* Test Employer */}
+            <div>
+              <p className="text-gray-600">
+                <strong>Employer Email:</strong>testemployer@gmail.com
+              </p>
+              <p className="text-gray-600">
+                <strong>Password:</strong> 12345678
+              </p>
+            </div>
+            {/* Test Job Seeker */}
+            <div>
+              <p className="text-gray-600">
+                <strong>Job Seeker Email:</strong>testjobseeker@gmail.com
+              </p>
+              <p className="text-gray-600">
+                <strong>Password:</strong> 12345678
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

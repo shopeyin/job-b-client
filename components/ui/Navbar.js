@@ -13,7 +13,7 @@ async function Navbar() {
         <div className="flex flex-wrap justify-between items-center h-auto py-4">
           <div className="flex-shrink-0">
             <Link href="/" className="text-2xl font-bold text-dark-blue">
-              MyApp
+              Job Board
             </Link>
           </div>
 
