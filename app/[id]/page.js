@@ -41,10 +41,9 @@ export default async function Job({ params }) {
     requirements,
     company,
     created_at,
+    closing_date,
     status,
   } = data.job;
-
- 
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
@@ -53,7 +52,8 @@ export default async function Job({ params }) {
           <h1 className="text-4xl font-bold text-gray-800">{title}</h1>
           <p className="text-gray-600">{location}</p>
           <p className="text-gray-500">
-            {new Date(created_at).toLocaleDateString()}
+            {new Date(created_at).toLocaleDateString()} -{" "}
+            {new Date(closing_date).toLocaleDateString()}
           </p>
         </header>
 

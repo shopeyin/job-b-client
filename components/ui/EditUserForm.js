@@ -16,7 +16,7 @@ function EditUserForm({ user }) {
       setTimeout(() => {
         setEditModalOpen(false);
         setNotify(null);
-      }, 1500); // Display message for 1.5 seconds before closing
+      }, 1500);
     }
   }, [message]);
 
@@ -24,10 +24,7 @@ function EditUserForm({ user }) {
     setEditModalOpen(true);
   };
 
-  //
-  //
-  //
-
+  console.log(message, 'STATE');
   return (
     <>
       <button

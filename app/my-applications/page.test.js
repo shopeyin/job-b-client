@@ -62,7 +62,7 @@ describe("MyApplications component", () => {
     });
     render(await MyApplications());
 
-    screen.debug();
+    
     expect(screen.getByText("Software Engineer")).toBeInTheDocument();
     expect(screen.getByText("Product Manager")).toBeInTheDocument();
     expect(

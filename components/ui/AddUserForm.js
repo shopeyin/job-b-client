@@ -16,7 +16,7 @@ function AddUserForm() {
       setTimeout(() => {
         setAddModalOpen(false);
         setNotify(null);
-      }, 2000); // Display message for 1.5 seconds before closing
+      }, 2000);
     } else if (message?.status === "error") {
       setNotify(message);
     }
@@ -49,7 +49,7 @@ function AddUserForm() {
               ""
             )}
 
-            <form action={formAction}>
+            <form action={formAction} role="form">
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Name
@@ -110,16 +110,21 @@ function AddUserForm() {
               </div>
               <div className="flex justify-end space-x-4">
                 <button
-                  onClick={() => setAddModalOpen(false)}
+                  onClick={() => {
+                    setAddModalOpen(false);
+                    setNotify(null);
+                  }}
                   className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
                 >
                   Cancel
                 </button>
                 <button
-                  //   onClick={handleAddUser}
+                  disabled={isPending}
+                  id="add-user-button"
+                  type="submit"
                   className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
                 >
-                  Add User
+                  {isPending ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </form>

@@ -66,6 +66,7 @@ export default function SideNav({ title, navItems }) {
           ))}
         </ul>
       </nav>
+     
       <DeleteMe />
     </div>
   );

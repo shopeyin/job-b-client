@@ -19,7 +19,7 @@ function SignUpForm() {
           <p className="text-red-600 text-sm mb-2">{formState?.errors?.err}</p>
         )}
         <form action={formAction} className="space-y-6">
-          {/* Name Field */}
+         
           <div>
             {formState?.errors?.name && (
               <p className="text-red-600 text-sm mb-2">
@@ -35,7 +35,7 @@ function SignUpForm() {
             />
           </div>
 
-          {/* Email Field */}
+         
           <div>
             {formState?.errors?.email && (
               <p className="text-red-600 text-sm mb-2">
@@ -51,7 +51,7 @@ function SignUpForm() {
             />
           </div>
 
-          {/* Password Field */}
+          
           <div>
             {formState?.errors?.password && (
               <p className="text-red-600 text-sm mb-2">
@@ -66,7 +66,7 @@ function SignUpForm() {
             />
           </div>
 
-          {/* Confirm Password Field */}
+         
           <div>
             {formState?.errors?.passwordConfirm && (
               <p className="text-red-600 text-sm mb-2">
@@ -81,7 +81,7 @@ function SignUpForm() {
             />
           </div>
 
-          {/* Role Selection */}
+        
           <div>
             <select
               name="role"
@@ -93,7 +93,7 @@ function SignUpForm() {
             </select>
           </div>
 
-          {/* Submit Button */}
+          
           <div>
             <button
               type="submit"

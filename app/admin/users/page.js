@@ -6,12 +6,12 @@ import { getAllUsers } from "@/lib/api";
 
 async function Users() {
   const { users } = await getAllUsers();
-  //
+  
   return (
     <div>
       <div className="container mx-auto p-8">
         <h1 className="text-4xl font-semibold mb-6">User Management</h1>
-        {users.length}
+        {users.length} users
         {/* Add User Button */}
         <div className="mb-6">
           <AddUserForm />

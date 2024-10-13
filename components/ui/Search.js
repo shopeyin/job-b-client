@@ -44,13 +44,15 @@ export default function Search({ placeholder, totalPages }) {
   }, 1000);
 
   useEffect(() => {
-    handleSearch(); // Update URL when any filter changes
+    handleSearch(); 
   }, [page, title, workArrangement, contractType, minSalary, maxSalary]);
 
   useEffect(() => {
     setPage(1);
     handleSearch();
   }, [title, workArrangement, contractType, minSalary, maxSalary]);
+
+  
 
   const handlePrevious = () => {
     if (page > 1) {

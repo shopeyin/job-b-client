@@ -14,6 +14,8 @@ function DeleteUser({ user }) {
     setDeleteModalOpen(true);
   };
 
+  console.log(message)
+
   return (
     <>
       {" "}
@@ -23,7 +25,7 @@ function DeleteUser({ user }) {
       >
         Delete
       </button>
-      {/* Delete Confirmation Modal */}
+    
       {isDeleteModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">

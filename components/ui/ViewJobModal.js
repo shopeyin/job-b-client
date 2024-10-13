@@ -73,6 +73,10 @@ function ViewJobModal({ job }) {
               <div className="text-sm text-gray-500">
                 Posted on: {new Date(job.created_at).toLocaleDateString()}
               </div>
+               {/* Posted At */}
+               <div className="text-sm text-gray-500">
+                Closes on: {new Date(job.closing_date).toLocaleDateString()}
+              </div>
             </div>
 
             {/* Close Button */}
