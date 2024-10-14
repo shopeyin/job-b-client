@@ -13,7 +13,7 @@ function DeleteMe() {
   //   setDeleteModalOpen(false);
   // };
   return (
-    <div className="mb-20">
+    <div className="">
       <button
         onClick={handleDeleteConfirmation}
         className="bg-red-500 text-white w-full px-4 py-2 rounded-md hover:bg-red-600 transition"

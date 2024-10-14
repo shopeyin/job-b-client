@@ -1,11 +1,11 @@
 "use client";
 
 import { updateCompanyAction } from "@/lib/actions";
+import Image from "next/image";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function CompanyProfileForm({ company }) {
- 
   const [formState, formAction, isPending] = useActionState(
     updateCompanyAction.bind(null, company?._id),
     undefined
@@ -13,7 +13,7 @@ export default function CompanyProfileForm({ company }) {
 
   useEffect(() => {
     if (formState?.fieldData?.message) {
-      toast.success("Form Updated", {
+      toast.success("Company Updated", {
         position: "top-center",
         className: "bg-green-500",
         duration: 5000,
@@ -22,7 +22,6 @@ export default function CompanyProfileForm({ company }) {
       formState.fieldData.message = null;
     }
   }, [formState?.fieldData?.message]);
- 
 
   return (
     <div className="max-w-lg bg-white p-8 rounded-lg shadow-md">
@@ -104,11 +103,12 @@ export default function CompanyProfileForm({ company }) {
             <h4 className="text-sm font-medium text-gray-700">
               Current/Selected Logo
             </h4>
-
-            <img
+            <Image
               src={company?.logo || `https://via.placeholder.com/100`}
               alt="Company Logo"
-              className="mt-2 w-32 h-32 object-cover rounded-lg shadow-lg"
+              width={128}
+              height={128}
+              className="mt-2 object-cover rounded-lg shadow-lg"
             />
           </div>
         </div>

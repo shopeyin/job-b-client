@@ -57,7 +57,7 @@ export default async function EmployerDashboard() {
             </Link>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+          {/* <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 className="text-xl font-semibold text-gray-700">
               Pending Applications
             </h2>
@@ -81,7 +81,7 @@ export default async function EmployerDashboard() {
             >
               View Candidates
             </Link>
-          </div>
+          </div> */}
         </section>
 
         {/* Quick Actions Section */}
